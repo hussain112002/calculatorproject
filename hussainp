@@ -1,0 +1,52 @@
+@Override
+   public void actionPerformed(ActionEvent e) {
+       String command = e.getActionCommand();
+
+       if (command.equals("ON")) {
+           isOn = true;
+           display.setText("");
+       } else if (command.equals("OFF")) {
+           isOn = false;
+           display.setText("");
+       } else if (isOn) {
+           if (command.equals("C")) {
+               display.setText("");
+           } else if (command.equals("=")) {
+               try {
+                   String[] parts = display.getText().split(" ");
+                   calculator.setNumbers(Double.parseDouble(parts[0]), Double.parseDouble(parts[2]));
+                   double result = 0;
+                   switch (parts[1]) {
+                       case "+":
+                           result = calculator.add();
+                           break;
+                       case "-":
+                           result = calculator.subtract();
+                           break;
+                       case "*":
+                           result = calculator.multiply();
+                           break;
+                       case "/":
+                           result = calculator.divide();
+                           break;
+                       case "%":
+                           result = calculator.percentage();
+                           break;
+                   }
+                   display.setText(String.valueOf(result));
+               } catch (Exception ex) {
+                   display.setText("Error");
+               }
+           } else {
+               display.setText(display.getText() + command + " ");
+           }
+       }
+   }
+
+   public static void main(String[] args) {
+       SwingUtilities.invokeLater(() -> {
+           CalculatorGUI calc = new CalculatorGUI();
+           calc.setVisible(true);
+       });
+   }
+}
